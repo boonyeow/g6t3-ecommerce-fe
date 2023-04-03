@@ -23,6 +23,14 @@ const menuItems = [
     path: "/login",
     name: "Login",
   },
+  {
+    path: "/seller/create",
+    name: "Create Product",
+  },
+  {
+    path: "/seller/view",
+    name: "View All Products",
+  },
 ];
 
 const Header = ({ scrolled }) => {

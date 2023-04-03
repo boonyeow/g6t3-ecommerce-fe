@@ -17,43 +17,49 @@ import {
 import { Link as RLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import NumberField from "../components/NumberField";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const ProductPage = () => {
   const { id } = useParams();
-  const product = {
-    id: "110",
-    name: "Fresh Blueberries",
-    seller: "Fresh",
-    image_url:
-      "https://media.nedigital.sg/fairprice/fpol/media/images/product/XL/10632060_XL1_20201014.jpg?w=1200&q=70",
-    price: "3.90",
-    reviews: [
-      {
-        order_id: 100,
-        user_id: "bytan@gmail.com",
-        review_description: "refund!!!",
-        review_stars: 1,
-        review_date: "2023-04-02T15:36:19.164+00:00",
-        purchase_date: "2023-04-01T15:39:32.000+00:00",
-      },
-    ],
+  const [product, setProduct] = useState({});
+  const [quantity, setQuantity] = useState(1);
+  const fetchProductDetails = () => {
+    axios
+      .get(`${import.meta.env.VITE_PRODUCT_ENDPOINT}/product/get/${id}`)
+      .then((res) => {
+        setProduct(res.data.data);
+      });
   };
+
+  useEffect(() => {
+    console.log(quantity);
+  }, [quantity]);
+
+  useEffect(() => {
+    fetchProductDetails();
+  }, []);
 
   return (
     <Flex w="100%">
       <Box w="8xl" m="auto" mt="24">
         <HStack mt={2} p={4} spacing={24}>
           <Image src={product.image_url} w="500px" h="500px"></Image>
-          <VStack alignItems="start">
-            <Heading>{product.name}</Heading>
-            <RLink>{`Sold by ${product.seller}`}</RLink>
-            <Text>{product.description}</Text>
-            <Box>
-              <Text>Quantity</Text>
-              <NumberField />
-            </Box>
-
-            <Box>
+          <Box>
+            <VStack alignItems="start">
+              <Heading>{product.product_name}</Heading>
+              <Box>
+                <Text>Quantity</Text>
+                <NumberField
+                  onChange={(val) => {
+                    setQuantity(val);
+                  }}
+                  max={product.stock}
+                />
+                <Text>{product.stock - quantity} stock available</Text>
+              </Box>
+            </VStack>
+            <Box mt={2}>
               <Text>Price</Text>
               <Text
                 fontSize="2xl"
@@ -62,7 +68,7 @@ const ProductPage = () => {
             <Button colorScheme="teal" size="lg">
               Add to cart
             </Button>
-          </VStack>
+          </Box>
         </HStack>
         <Box mt={2} p={4}>
           <Text fontWeight="bold" fontSize="3xl">

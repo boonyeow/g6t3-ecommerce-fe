@@ -9,65 +9,64 @@ import {
   Heading,
   Image,
   SimpleGrid,
+  Stack,
+  Tag,
+  TagLabel,
   Text,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const BrowseProductsPage = () => {
-  const { id } = useParams();
-  const products = [
-    {
-      id: "100",
-      name: "Pasar South Korea Strawberry",
-      description: "hello",
-      seller: "Pasar",
+  const [products, setProducts] = useState([]);
+  const fetchProductList = () => {
+    axios
+      .get(`${import.meta.env.VITE_PRODUCT_ENDPOINT}/product/get`)
+      .then((res) => {
+        setProducts(res.data.data);
+      });
+  };
 
-      image_url:
-        "https://media.nedigital.sg/fairprice/fpol/media/images/product/XL/13092218_XL1_20221123.jpg?w=1200&q=70",
-      price: "8.75",
-      quantityAvailable: 10,
-    },
-    {
-      id: "110",
-      name: "Fresh Blueberries",
-      seller: "Fresh",
-      image_url:
-        "https://media.nedigital.sg/fairprice/fpol/media/images/product/XL/10632060_XL1_20201014.jpg?w=1200&q=70",
-      price: "3.90",
-      reviews: [
-        {
-          order_id: 100,
-          user_id: "bytan@gmail.com",
-          review_description: "refund!!!",
-          review_stars: 1,
-          review_date: "2023-04-02T15:36:19.164+00:00",
-          purchase_date: "2023-04-01T15:39:32.000+00:00",
-        },
-      ],
-    },
-  ];
+  useEffect(() => {
+    fetchProductList();
+  }, []);
 
   return (
     <Flex w="100%">
       <Box w="8xl" m="auto" mt="24">
-        <Heading>All Products (100)</Heading>
+        <Heading>
+          All Products
+          <Tag
+            variant="subtle"
+            colorScheme="blue"
+            verticalAlign={"middle"}
+            ml={"10px"}>
+            <TagLabel>{products.length}</TagLabel>
+          </Tag>
+        </Heading>
 
         <Box mt={2} p={4}>
           <SimpleGrid columns={4} spacing={10}>
             {products.map((x) => {
               return (
                 <Card
-                  boxShadow={"md"}
                   borderRadius={16}
                   as={Link}
-                  to={`/product/${x.id}`}>
+                  to={`/product/${x.product_id}`}>
                   <CardBody>
-                    <Image src={x.image_url} />
-                    <Text fontSize="lg" fontWeight="bold">
-                      {x.name}
-                    </Text>
-                    <Text>{`$${x.price}`}</Text>
+                    <Image
+                      src={x.image_url}
+                      objectFit="contain"
+                      h="300px"
+                      w="100%"
+                    />
+                    <Stack mt="3">
+                      <Text fontSize="lg" fontWeight="bold">
+                        {x.product_name}
+                      </Text>
+                      <Text>{`$${x.price}`}</Text>
+                    </Stack>
                   </CardBody>
                 </Card>
               );

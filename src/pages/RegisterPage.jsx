@@ -13,15 +13,12 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { PasswordField } from "../components/Login/PasswordField";
-import { Link as RLink, useNavigate } from "react-router-dom";
-import { useReducer } from "react";
-import axios from "axios";
+import { useEffect, useReducer } from "react";
 import Swal from "sweetalert2";
-import { useAuthStore } from "../store";
-
-const LoginPage = () => {
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+const RegisterPage = () => {
   const navigate = useNavigate();
-  const { token, setToken } = useAuthStore();
   const reducer = (state, action) => {
     switch (action.type) {
       case "changed_email":
@@ -39,9 +36,10 @@ const LoginPage = () => {
   const [state, dispatch] = useReducer(reducer, {
     email: "",
     password: "",
+    address: "",
   });
 
-  const handleLogin = () => {
+  const handleRegistration = () => {
     // perform check on empty email/password
     if (state.email === "" || state.password === "") {
       Swal.fire({
@@ -53,30 +51,26 @@ const LoginPage = () => {
       return;
     }
 
-    // login account
     // register account
     axios
-      .post(`${import.meta.env.VITE_AUTH_ENDPOINT}/login`, state)
+      .post(`${import.meta.env.VITE_AUTH_ENDPOINT}/register`, state)
       .then((res) => {
-        console.log(res.data["bearer_token"]);
-        setToken(res.data);
         Swal.fire({
           icon: "success",
           title: "Success!",
-          text: `You are currently logged in.`,
+          text: `Account has been registered. Please proceed to login.`,
           confirmButtonColor: "#262626",
         }).then((result) => {
-          navigate("/");
+          navigate("/login");
         });
       })
       .catch((err) => {
-        console.log(err);
-        // Swal.fire({
-        //   icon: "error",
-        //   title: "Oops...",
-        //   text: err.response.data.message,
-        //   confirmButtonColor: "#262626",
-        // });
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: err.response.data.message,
+          confirmButtonColor: "#262626",
+        });
         return;
       });
   };
@@ -102,18 +96,8 @@ const LoginPage = () => {
                 md: "3",
               }}>
               <Heading textAlign={"left"} size={"2xl"}>
-                LOGIN
+                REGISTER
               </Heading>
-              <HStack spacing="1">
-                <Text color="muted">Don't have an account?</Text>
-                <Button
-                  as={RLink}
-                  to="/register"
-                  variant="link"
-                  colorScheme="blue">
-                  Sign up
-                </Button>
-              </HStack>
             </Stack>
           </Stack>
           <Box>
@@ -142,8 +126,8 @@ const LoginPage = () => {
                 />
               </Stack>
               <Stack spacing="6">
-                <Button colorScheme="teal" onClick={handleLogin}>
-                  Sign in
+                <Button colorScheme="teal" onClick={handleRegistration}>
+                  Register
                 </Button>
               </Stack>
             </Stack>
@@ -154,4 +138,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

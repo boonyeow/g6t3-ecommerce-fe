@@ -5,7 +5,7 @@ const Layout = ({ children, className }) => {
   return (
     <Box>
       <Header />
-      <Box as="main" h={"calc(100vh - 150px)"}>
+      <Box as="main" minH={"calc(100vh - 150px)"}>
         {children}
       </Box>
       <Box>Hello this is footer</Box>

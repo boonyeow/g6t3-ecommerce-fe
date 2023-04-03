@@ -13,6 +13,10 @@ import CartPage from "./pages/CartPage";
 import ProductPage from "./pages/ProductPage";
 import LoginPage from "./pages/LoginPage";
 import BrowseProductsPage from "./pages/BrowseProductsPage";
+import RegisterPage from "./pages/RegisterPage";
+import CreateProductPage from "./pages/seller/CreateProductPage";
+import EditProductPage from "./pages/seller/EditProductPage";
+import ViewCreatedProductsPage from "./pages/seller/ViewCreatedProductsPage";
 
 const theme = extendTheme({
   fonts: {
@@ -32,6 +36,22 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route path="/products" element={<BrowseProductsPage />} exact />
             <Route path="/product/:id" element={<ProductPage />} exact />
             <Route path="/login" element={<LoginPage />} exact />
+            <Route path="/register" element={<RegisterPage />} exact />
+            <Route
+              path="/seller/create"
+              element={<CreateProductPage />}
+              exact
+            />
+            <Route
+              path="/seller/view"
+              element={<ViewCreatedProductsPage />}
+              exact
+            />
+            <Route
+              path="/seller/edit/:id"
+              element={<EditProductPage />}
+              exact
+            />
           </Routes>
         </Layout>
       </BrowserRouter>

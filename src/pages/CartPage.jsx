@@ -63,7 +63,7 @@ const CartPage = () => {
       <Flex minW="6xl" m="auto" mt="24" p="25" justifyContent="center">
         <Box>
           <Heading>Shopping Cart</Heading>
-          <Box width="100%">
+          <Box width="100%" mt="15px">
             <Checkbox
               isChecked={allChecked}
               isIndeterminate={isIndeterminate}
@@ -73,7 +73,7 @@ const CartPage = () => {
               Select All Items
             </Checkbox>
 
-            <VStack alignSelf={"start"} spacing="5">
+            <VStack alignSelf={"start"} spacing="5" mt="25px">
               {cartItems.map((item, idx) => {
                 return (
                   <HStack
@@ -81,7 +81,9 @@ const CartPage = () => {
                     borderRadius="24px"
                     overflow="hidden"
                     px="12"
-                    spacing="16">
+                    spacing="16"
+                    border="1px"
+                    borderColor="#f6f6f6">
                     <Box>
                       <Checkbox
                         isChecked={checkedItems[idx]}
@@ -126,7 +128,7 @@ const CartPage = () => {
               <Text>{`TOTAL (${"1"} items) `}</Text>
               <Text fontWeight="bold">{`${"$10.00"}`}</Text>
             </Box>
-            <Button colorScheme="teal" size="lg">
+            <Button colorScheme="black" size="lg">
               Checkout
             </Button>
           </Flex>
