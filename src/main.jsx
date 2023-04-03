@@ -7,7 +7,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import ReviewPage from "./pages/ReviewPage";
+import OrderPage from "./pages/OrderPage";
 import Layout from "./layout/Layout";
 import CartPage from "./pages/CartPage";
 import ProductPage from "./pages/ProductPage";
@@ -38,7 +38,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Routes>
             <Route path="/" element={<HomePage />} exact />
             <Route path="/cart" element={<CartPage />} exact />
-            <Route path="/orders" element={<ReviewPage />} exact />
+            <Route path="/orders" element={<OrderPage />} exact />
             <Route path="/products" element={<BrowseProductsPage />} exact />
             <Route path="/product/:id" element={<ProductPage />} exact />
             <Route path="/login" element={<LoginPage />} exact />
