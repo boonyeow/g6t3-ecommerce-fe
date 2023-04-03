@@ -23,6 +23,12 @@ const theme = extendTheme({
     heading: `'InterVariable', sans-serif`,
     body: `'InterVariable', sans-serif`,
   },
+  color: {
+    brand: {
+      0: "#04111d",
+      100: "#2081e2",
+    },
+  },
 });
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

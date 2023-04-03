@@ -59,7 +59,9 @@ const LoginPage = () => {
       .post(`${import.meta.env.VITE_AUTH_ENDPOINT}/login`, state)
       .then((res) => {
         console.log(res.data["bearer_token"]);
-        setToken(res.data);
+        let token = { ...res.data };
+        token["email"] = state.email;
+        setToken(token);
         Swal.fire({
           icon: "success",
           title: "Success!",

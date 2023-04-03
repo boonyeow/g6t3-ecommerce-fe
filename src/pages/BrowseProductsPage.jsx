@@ -48,9 +48,10 @@ const BrowseProductsPage = () => {
 
         <Box mt={2} p={4}>
           <SimpleGrid columns={4} spacing={10}>
-            {products.map((x) => {
+            {products.map((x, idx) => {
               return (
                 <Card
+                  key={idx}
                   borderRadius={16}
                   as={Link}
                   to={`/product/${x.product_id}`}>

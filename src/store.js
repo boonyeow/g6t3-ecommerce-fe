@@ -5,14 +5,17 @@ export const useAuthStore = create(
   persist(
     (set) => ({
       token: null,
+      email: null,
       setToken: (data) => {
         set((state) => ({
           token: data["bearer_token"],
+          email: data["email"],
         }));
       },
       clearStore: () => {
         set(() => ({
           token,
+          email,
         }));
       },
     }),
