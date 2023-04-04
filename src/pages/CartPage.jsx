@@ -28,14 +28,14 @@ const CartPage = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [toCheckout, setToCheckout] = useState([]);
   const navigate = useNavigate();
-  console.log(allChecked, isIndeterminate);
+  // console.log(allChecked, isIndeterminate);
 
   useEffect(() => {
     fetchCartItems(true);
   }, []);
 
   useEffect(() => {
-    console.log("changes detected", cartInfo);
+    // console.log("changes detected", cartInfo);
     if (cartInfo !== undefined) {
       setTotalPrice(fetchTotalPrice(cartInfo["items"]));
     }
@@ -71,10 +71,13 @@ const CartPage = () => {
     setCartInfo(temp);
 
     axios
-      .post(
-        `${
-          import.meta.env.VITE_CART_ENDPOINT
-        }/cart/remove/${email}/${productId}`
+      .put(
+        `${import.meta.env.VITE_CART_ENDPOINT}/remove/${email}/${productId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       .then((res) => {
         Swal.fire({
@@ -165,12 +168,14 @@ const CartPage = () => {
                     borderRadius="24px"
                     overflow="hidden"
                     px="12"
-                    spacing="16">
+                    spacing="16"
+                  >
                     <Box
                       p="5"
                       border="1px"
                       borderColor="#d7d7d7"
-                      borderRadius="12px">
+                      borderRadius="12px"
+                    >
                       <Image src={item.image_url} h="50px" w="50px"></Image>
                     </Box>
                     <Box>
@@ -201,7 +206,8 @@ const CartPage = () => {
                       colorScheme="red"
                       onClick={() => {
                         removeItem(idx, item.product_id);
-                      }}>
+                      }}
+                    >
                       Remove
                     </Button>
                   </HStack>

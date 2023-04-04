@@ -64,7 +64,7 @@ const LoginPage = () => {
     axios
       .post(`${import.meta.env.VITE_AUTH_ENDPOINT}/login`, state)
       .then((res) => {
-        console.log(res.data["bearer_token"]);
+        // console.log(res.data["bearer_token"]);
         let token = { ...res.data };
         token["email"] = state.email;
         setToken(token);
@@ -100,14 +100,16 @@ const LoginPage = () => {
           base: "0",
           sm: "8",
           md: "16",
-        }}>
+        }}
+      >
         <Stack spacing="8">
           <Stack spacing="6">
             <Stack
               spacing={{
                 base: "2",
                 md: "3",
-              }}>
+              }}
+            >
               <Heading textAlign={"left"} size={"2xl"}>
                 LOGIN
               </Heading>
@@ -117,7 +119,8 @@ const LoginPage = () => {
                   as={RLink}
                   to="/register"
                   variant="link"
-                  colorScheme="blue">
+                  colorScheme="blue"
+                >
                   Sign up
                 </Button>
               </HStack>

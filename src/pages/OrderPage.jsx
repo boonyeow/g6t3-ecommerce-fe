@@ -51,6 +51,7 @@ const OrderPage = () => {
       })
       .then((res) => {
         setOrder(res.data.data);
+        // console.log(res.data.data);
       })
       .catch((err) => {
         console.log(err.message);
@@ -63,7 +64,7 @@ const OrderPage = () => {
 
   // Submit Review
   const handleReview = () => {
-    console.log(modalProductId, modalOrderId, email, review, rating);
+    // console.log(modalProductId, modalOrderId, email, review, rating);
 
     if (review == "" || rating == "") {
       handleClose();
@@ -90,7 +91,7 @@ const OrderPage = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         handleClose();
         Swal.fire({
           icon: "success",
@@ -175,7 +176,7 @@ const OrderPage = () => {
                     </Text>
                   </Box>
                   {order.items.map((item, idx) => (
-                    <Box h="100px" mx="10px" key={idx}>
+                    <Box h="110px" mx="10px" key={idx}>
                       <Flex alignItems="center">
                         <HStack spacing="24px">
                           <Box
@@ -201,6 +202,7 @@ const OrderPage = () => {
                             <Text>{item.product_name}</Text>
                             <Text>Quantity Purchased: {item.quantity}</Text>
                             <Text>Price: ${item.price}</Text>
+                            <Text>Order Status: {order.status}</Text>
                             <Text>Seller: {item.seller_email}</Text>
                           </Box>
                         </HStack>

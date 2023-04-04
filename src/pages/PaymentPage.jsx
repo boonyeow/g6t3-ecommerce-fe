@@ -32,18 +32,19 @@ const PaymentPage = () => {
   const { cart } = useCartStore();
   const { email, token } = useAuthStore();
   const navigate = useNavigate();
-  useEffect(() => {
-    console.log("changed", state);
-  }, [state]);
 
-  useEffect(() => {
-    console.log("ayo", cart);
-  }, []);
+  // useEffect(() => {
+  //   console.log("changed", state);
+  // }, [state]);
+
+  // useEffect(() => {
+  //   console.log("ayo", cart);
+  // }, []);
 
   const handleInputChange = (evt) => {
     const { name, value } = evt.target;
     if (name === "expiry" && value.length === 4) {
-      console.log(typeof value);
+      // console.log(typeof value);
       let tempMonth = Number(value.substring(0, 2));
       let tempYear = Number("20" + value.substring(2, 4));
       let temp = { ...state };
@@ -61,7 +62,7 @@ const PaymentPage = () => {
   };
 
   const handlePayment = () => {
-    console.log("hehe", state, cart);
+    // console.log("hehe", state, cart);
     let data = {
       product_ids: cart.map((item) => item.product_id),
       card: {
@@ -106,7 +107,8 @@ const PaymentPage = () => {
         mt="24"
         p="25"
         direction="column"
-        alignSelf={"start"}>
+        alignSelf={"start"}
+      >
         <Box>
           <Heading>Review</Heading>
           {cart &&
@@ -118,12 +120,14 @@ const PaymentPage = () => {
                     border="1px"
                     borderColor="#d7d7d7"
                     borderRadius="12px"
-                    mr="5">
+                    mr="5"
+                  >
                     <Image
                       src={item.image_url}
                       height="50px"
                       width="50px"
-                      objectFit="contain"></Image>
+                      objectFit="contain"
+                    ></Image>
                   </Box>
                   <HStack spacing="16" w="100%">
                     <Box>

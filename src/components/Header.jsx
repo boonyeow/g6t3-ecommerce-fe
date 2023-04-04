@@ -36,7 +36,7 @@ const Header = ({ scrolled }) => {
   }, []);
 
   const handleLogout = () => {
-    console.log(token);
+    // console.log(token);
     clearStore();
     setIsLoggedIn(false);
     Swal.fire({
@@ -63,7 +63,8 @@ const Header = ({ scrolled }) => {
       alignItems="center"
       // borderBottom="2px"
       bgColor="white"
-      boxShadow="xl">
+      boxShadow="xl"
+    >
       <Box className="hidden md:flex">
         <HStack spacing="10">
           {menuItems.map((item) => (
@@ -71,7 +72,8 @@ const Header = ({ scrolled }) => {
               as={RLink}
               key={item.name}
               to={item.path}
-              variant={location.pathname === item.path ? "active" : "inactive"}>
+              variant={location.pathname === item.path ? "active" : "inactive"}
+            >
               {item.name}
             </Link>
           ))}

@@ -41,8 +41,8 @@ const ProductPage = () => {
   }, []);
 
   const addToCart = () => {
-    console.log(product);
-    console.log(quantity);
+    // console.log(product);
+    // console.log(quantity);
     let data = {
       product_id: product["product_id"],
       product_name: product["product_name"],
@@ -96,7 +96,7 @@ const ProductPage = () => {
         },
       })
       .then((res) => {
-        console.log(res.data.data);
+        // console.log(res.data.data);
         setReview(res.data.data);
       })
       .catch((err) => {

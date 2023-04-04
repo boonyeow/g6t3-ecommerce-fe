@@ -23,7 +23,6 @@ const Layout = ({ children, className }) => {
       <Box as="main" minH={"calc(100vh - 150px)"}>
         {children}
       </Box>
-      <Box>Hello this is footer</Box>
     </Box>
   );
 };
