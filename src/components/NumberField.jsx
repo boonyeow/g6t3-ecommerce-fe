@@ -1,10 +1,10 @@
 import { Button, HStack, Input, useNumberInput } from "@chakra-ui/react";
 
-const NumberField = ({ onChange, max, maxWidth }) => {
+const NumberField = ({ onChange, max, maxWidth, defaultValue = 1 }) => {
   const { getInputProps, getIncrementButtonProps, getDecrementButtonProps } =
     useNumberInput({
       step: 1,
-      defaultValue: 1,
+      defaultValue: defaultValue,
       min: 1,
       max: max,
       onChange: onChange,

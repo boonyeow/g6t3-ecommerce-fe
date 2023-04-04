@@ -9,54 +9,101 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NumberField from "../components/NumberField";
+import { useAuthStore } from "../store/authStore";
+import axios from "axios";
+import { useCartStore } from "../store/cartStore";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const CartPage = () => {
-  const [checkedItems, setCheckedItems] = useState([false, false]);
+  const { email, token } = useAuthStore();
+  const { cart, setCart } = useCartStore();
+  const [checkedItems, setCheckedItems] = useState([]);
 
   const allChecked = checkedItems.every(Boolean);
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
-
+  const [cartInfo, setCartInfo] = useState();
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [toCheckout, setToCheckout] = useState([]);
+  const navigate = useNavigate();
   console.log(allChecked, isIndeterminate);
-  const cartItems = [
-    {
-      id: "110",
-      name: "Fresh Blueberries",
-      seller: "Fresh",
-      image_url:
-        "https://media.nedigital.sg/fairprice/fpol/media/images/product/XL/10632060_XL1_20201014.jpg?w=1200&q=70",
-      price: "3.90",
-      reviews: [
-        {
-          order_id: 100,
-          user_id: "bytan@gmail.com",
-          review_description: "refund!!!",
-          review_stars: 1,
-          review_date: "2023-04-02T15:36:19.164+00:00",
-          purchase_date: "2023-04-01T15:39:32.000+00:00",
-        },
-      ],
-    },
-    {
-      id: "110",
-      name: "Fresh Blueberries",
-      seller: "Fresh",
-      image_url:
-        "https://media.nedigital.sg/fairprice/fpol/media/images/product/XL/10632060_XL1_20201014.jpg?w=1200&q=70",
-      price: "3.90",
-      reviews: [
-        {
-          order_id: 100,
-          user_id: "bytan@gmail.com",
-          review_description: "refund!!!",
-          review_stars: 1,
-          review_date: "2023-04-02T15:36:19.164+00:00",
-          purchase_date: "2023-04-01T15:39:32.000+00:00",
-        },
-      ],
-    },
-  ];
+
+  useEffect(() => {
+    fetchCartItems(true);
+  }, []);
+
+  useEffect(() => {
+    console.log("changes detected", cartInfo);
+    if (cartInfo !== undefined) {
+      setTotalPrice(fetchTotalPrice(cartInfo["items"]));
+    }
+  }, [cartInfo]);
+
+  const fetchCartItems = (initCheckedItems) => {
+    axios
+      .get(`${import.meta.env.VITE_CART_ENDPOINT}/cart/${email}`)
+      .then((res) => {
+        setCartInfo(res.data.data);
+        if (initCheckedItems) {
+          setCheckedItems(new Array(res.data.data["items"].length).fill(false));
+        }
+      });
+  };
+
+  const fetchTotalPrice = (items) => {
+    let totalPrice = 0;
+
+    for (let i = 0; i < items.length; i++) {
+      totalPrice += items[i].price * items[i].quantity;
+    }
+    return totalPrice;
+  };
+
+  const removeItem = (idx, productId) => {
+    let temp = { ...cartInfo };
+    let removed = temp["items"].splice(idx, 1);
+    setCartInfo(temp);
+
+    axios
+      .post(
+        `${
+          import.meta.env.VITE_CART_ENDPOINT
+        }/cart/remove/${email}/${productId}`
+      )
+      .then((res) => {
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: `Product has been removed from cart.`,
+          confirmButtonColor: "#262626",
+        });
+      })
+      .catch((e) => console.log(e));
+  };
+
+  const handleCheckout = () => {
+    // let checkedIndex = [];
+    // for (let i = 0; i < checkedItems.length; i++) {
+    //   if (checkedItems[i] === true) {
+    //     checkedIndex.push(i);
+    //   }
+    // }
+
+    // if (checkedIndex.length === 0) {
+    //   Swal.fire({
+    //     icon: "error",
+    //     title: "Oops...",
+    //     text: "Please select the items you wish to checkout.",
+    //     confirmButtonColor: "#262626",
+    //   });
+    //   return;
+    // }
+
+    setCart(cartInfo.items);
+    navigate("/payment");
+  };
 
   return (
     <Box w="100%">
@@ -74,16 +121,14 @@ const CartPage = () => {
             </Checkbox>
 
             <VStack alignSelf={"start"} spacing="5" mt="25px">
-              {cartItems.map((item, idx) => {
+              {cartInfo?.items.map((item, idx) => {
                 return (
                   <HStack
                     bgColor="white"
                     borderRadius="24px"
                     overflow="hidden"
                     px="12"
-                    spacing="16"
-                    border="1px"
-                    borderColor="#f6f6f6">
+                    spacing="16">
                     <Box>
                       <Checkbox
                         isChecked={checkedItems[idx]}
@@ -94,49 +139,64 @@ const CartPage = () => {
                         }}></Checkbox>
                     </Box>
 
-                    <Box p="5">
-                      <Image src={item.image_url} h="100px" w="100px"></Image>
+                    <Box
+                      p="5"
+                      border="1px"
+                      borderColor="#d7d7d7"
+                      borderRadius="12px">
+                      <Image src={item.image_url} h="50px" w="50px"></Image>
                     </Box>
                     <Box>
                       <Text fontSize="2xl" fontWeight="bold">
-                        {item.name}
+                        {item.product_name}
                       </Text>
                       <Flex>
                         Sold by&nbsp;
                         <Text fontWeight="semibold" color="blue.500">
-                          {item.seller}
+                          {item.seller_email?.split(".")[0]}
                         </Text>
                       </Flex>
                     </Box>
-                    <NumberField />
+                    <NumberField
+                      maxWidth={"200px"}
+                      defaultValue={item.quantity}
+                      onChange={(val) => {
+                        let temp = { ...cartInfo };
+                        temp["items"][idx].quantity = Number(val);
+                        temp["total_price"] = fetchTotalPrice(temp["items"]);
+                        setCartInfo(temp);
+                      }}
+                    />
                     <Box textAlign={"center"}>
                       <Text>Subtotal</Text>
-                      <Text fontWeight="semibold">{`$${item.price}`}</Text>
+                      <Text fontWeight="semibold">{`$${
+                        item.price * item.quantity
+                      }`}</Text>
                     </Box>
-                    <Button colorScheme="red">Remove</Button>
+                    <Button
+                      colorScheme="red"
+                      onClick={() => {
+                        removeItem(idx, item.product_id);
+                      }}>
+                      Remove
+                    </Button>
                   </HStack>
                 );
               })}
             </VStack>
           </Box>
 
-          <Flex direction="column">
-            <Text fontWeight="bold" fontSize="xl">
-              Order Summary
-            </Text>
+          <Flex direction="column" mt="35px">
+            <Heading>Order Summary</Heading>
             <Box>
-              <Text>{`TOTAL (${"1"} items) `}</Text>
-              <Text fontWeight="bold">{`${"$10.00"}`}</Text>
+              <Text>{`TOTAL (${cartInfo?.items.length} items) `}</Text>
+              <Text fontWeight="bold">{`$${totalPrice}`}</Text>
             </Box>
-            <Button colorScheme="black" size="lg">
-              Checkout
+            <Button colorScheme="teal" size="lg" onClick={handleCheckout}>
+              Review & Pay
             </Button>
           </Flex>
         </Box>
-        {/* <Box>
-          <Button>Checkout</Button>
-          <Heading>Order Summary</Heading>
-        </Box> */}
       </Flex>
     </Box>
   );

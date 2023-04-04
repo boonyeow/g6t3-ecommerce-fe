@@ -17,6 +17,7 @@ import RegisterPage from "./pages/RegisterPage";
 import CreateProductPage from "./pages/seller/CreateProductPage";
 import EditProductPage from "./pages/seller/EditProductPage";
 import ViewCreatedProductsPage from "./pages/seller/ViewCreatedProductsPage";
+import PaymentPage from "./pages/PaymentPage";
 
 const theme = extendTheme({
   fonts: {
@@ -24,10 +25,7 @@ const theme = extendTheme({
     body: `'InterVariable', sans-serif`,
   },
   color: {
-    brand: {
-      0: "#04111d",
-      100: "#2081e2",
-    },
+    bluey: "164aff",
   },
 });
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -43,6 +41,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route path="/product/:id" element={<ProductPage />} exact />
             <Route path="/login" element={<LoginPage />} exact />
             <Route path="/register" element={<RegisterPage />} exact />
+            <Route path="/payment" element={<PaymentPage />} exact />
             <Route
               path="/seller/create"
               element={<CreateProductPage />}

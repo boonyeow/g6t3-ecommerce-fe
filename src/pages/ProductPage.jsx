@@ -20,7 +20,7 @@ import { useParams } from "react-router-dom";
 import NumberField from "../components/NumberField";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useAuthStore } from "../store";
+import { useAuthStore } from "../store/authStore";
 import Swal from "sweetalert2";
 
 const ProductPage = () => {
@@ -47,7 +47,7 @@ const ProductPage = () => {
     let data = {
       product_id: product["product_id"],
       product_name: product["product_name"],
-      stock: product["stock"],
+      // stock: product["stock"],
       price: product["price"],
       price_api: product["price_api"],
       seller_email: product["seller_email"],

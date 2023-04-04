@@ -17,7 +17,7 @@ import { Link as RLink, useNavigate } from "react-router-dom";
 import { useReducer } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useAuthStore } from "../store";
+import { useAuthStore } from "../store/authStore";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -72,7 +72,6 @@ const LoginPage = () => {
         });
       })
       .catch((err) => {
-        console.log(err);
         // Swal.fire({
         //   icon: "error",
         //   title: "Oops...",
