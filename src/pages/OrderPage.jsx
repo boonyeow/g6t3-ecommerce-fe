@@ -40,80 +40,13 @@ const OrderPage = () => {
   const [modalProductId, setModalProductId] = useState("");
   const [modalOrderId, setModalOrderId] = useState("");
 
-  const email_test = "bytan@gmail.com";
-
   const [order, setOrder] = useState([]);
 
   const fetchOrderList = () => {
     axios
-      .get(
-        `${import.meta.env.VITE_ORDER_ENDPOINT}/order/get/user/${email_test}`
-      )
+      .get(`${import.meta.env.VITE_ORDER_ENDPOINT}/order/get/user/${email}`)
       .then((res) => {
-        // setOrder(res.data.data);
-        // console.log(res.data.data);
-
-        setOrder([
-          {
-            items: [
-              {
-                image_url:
-                  "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Example_image.svg/600px-Example_image.svg.png",
-                price: 10.99,
-                price_api: "price_1Mna63HbLz6qKWZ5di3ZW1BJ",
-                product_id: "P1",
-                product_name: "Water Bottle",
-                quantity: 1,
-                seller_email: "cpong.2021@scis.smu.edu.sg",
-              },
-              {
-                image_url:
-                  "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Example_image.svg/600px-Example_image.svg.png",
-                price: 29.99,
-                price_api: "price_1Mna6xHbLz6qKWZ5ISjiOzZP",
-                product_id: "P3",
-                product_name: "Earpiece",
-                quantity: 2,
-                seller_email: "cpong.2021@scis.smu.edu.sg",
-              },
-            ],
-            order_id: "O48",
-            paid_amount: 70.97,
-            status: "processing",
-            time: "Mon, 03 Apr 2023 14:44:43 GMT",
-            user_id: "bytan@gmail.com",
-          },
-          {
-            items: [
-              {
-                image_url:
-                  "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Example_image.svg/600px-Example_image.svg.png",
-                price: 10.99,
-                price_api: "price_1Mna63HbLz6qKWZ5di3ZW1BJ",
-                product_id: "P1",
-                product_name: "Water Bottle",
-                quantity: 1,
-                seller_email: "cpong.2021@scis.smu.edu.sg",
-              },
-              {
-                image_url:
-                  "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Example_image.svg/600px-Example_image.svg.png",
-                price: 29.99,
-                price_api: "price_1Mna6xHbLz6qKWZ5ISjiOzZP",
-                product_id: "P3",
-                product_name: "Earpiece",
-                quantity: 2,
-                seller_email: "cpong.2021@scis.smu.edu.sg",
-              },
-            ],
-            order_id: "O49",
-            paid_amount: 70.97,
-            status: "processing",
-            time: "Mon, 03 Apr 2023 14:45:52 GMT",
-            user_id: "bytan@gmail.com",
-          },
-        ]);
-        console.log(order);
+        setOrder(res.data.data);
       })
       .catch((err) => {
         console.log(err.message);
@@ -126,7 +59,7 @@ const OrderPage = () => {
 
   // Submit Review
   const handleReview = () => {
-    console.log(modalProductId, modalOrderId, email_test, review, rating);
+    console.log(modalProductId, modalOrderId, email, review, rating);
 
     if (review == "" || rating == "") {
       handleClose();
@@ -142,7 +75,7 @@ const OrderPage = () => {
     let payload = {
       product_id: modalProductId,
       order_id: modalOrderId,
-      user_id: email_test,
+      user_id: email,
       review_description: review,
       review_stars: rating,
     };
@@ -215,63 +148,71 @@ const OrderPage = () => {
               <TagLabel>{order.length}</TagLabel>
             </Tag>
           </Heading>
-          {order.map((order, idx) => (
-            <Box mt="30px" boxShadow="xl" p="6" rounded="md" bg="white">
-              <VStack
-                divider={<StackDivider borderColor="gray.200" />}
-                spacing={4}
-                align="stretch"
-              >
-                <Box h="20px">
-                  Order Id - {order.order_id} &nbsp; &nbsp; (Date:&nbsp;
-                  {order.time})
-                </Box>
-                {order.items.map((item, idx) => (
-                  <Box h="100px" mx="10px">
-                    <Flex alignItems="center">
-                      <HStack spacing="24px">
-                        <Box as={Link} to={`/product/${item.product_id}`}>
-                          <Image
-                            src={item.image_url}
-                            objectFit="contain"
-                            h="100px"
-                            w="100%"
-                            alignSelf="flex-start"
-                            borderRadius="20px"
-                          />
-                        </Box>
-                        <Box
-                          as={Link}
-                          to={`/product/${item.product_id}`}
-                          _hover={{ textDecoration: "none" }}
-                        >
-                          <Text>{item.product_name}</Text>
-                          <Text>Quantity Purchased: {item.quantity}</Text>
-                          <Text>Price: ${item.price}</Text>
-                          <Text>Seller: {item.seller_email}</Text>
-                        </Box>
-                      </HStack>
-                      <Spacer />
-                      <Box>
-                        <Button
-                          colorScheme="blue"
-                          onClick={() =>
-                            handleReviewClick(
-                              item.product_name,
-                              item.product_id,
-                              order.order_id
-                            )
-                          }
-                        >
-                          Review
-                        </Button>
-                      </Box>
-                    </Flex>
+          {order.length != 0 ? (
+            order.map((order, idx) => (
+              <Box mt="30px" boxShadow="xl" p="6" rounded="md" bg="white">
+                <VStack
+                  divider={<StackDivider borderColor="gray.200" />}
+                  spacing={4}
+                  align="stretch"
+                >
+                  <Box h="20px">
+                    <Text fontWeight="bold">
+                      Order Id - {order.order_id} &nbsp; &nbsp; (Date:&nbsp;
+                      {order.time})
+                    </Text>
                   </Box>
-                ))}
-              </VStack>
+                  {order.items.map((item, idx) => (
+                    <Box h="100px" mx="10px">
+                      <Flex alignItems="center">
+                        <HStack spacing="24px">
+                          <Box as={Link} to={`/product/${item.product_id}`}>
+                            <Image
+                              src={item.image_url}
+                              objectFit="contain"
+                              h="100px"
+                              w="100%"
+                              alignSelf="flex-start"
+                              borderRadius="20px"
+                            />
+                          </Box>
+                          <Box
+                            as={Link}
+                            to={`/product/${item.product_id}`}
+                            _hover={{ textDecoration: "none" }}
+                          >
+                            <Text>{item.product_name}</Text>
+                            <Text>Quantity Purchased: {item.quantity}</Text>
+                            <Text>Price: ${item.price}</Text>
+                            <Text>Seller: {item.seller_email}</Text>
+                          </Box>
+                        </HStack>
+                        <Spacer />
+                        <Box>
+                          <Button
+                            colorScheme="blue"
+                            onClick={() =>
+                              handleReviewClick(
+                                item.product_name,
+                                item.product_id,
+                                order.order_id
+                              )
+                            }
+                          >
+                            Review
+                          </Button>
+                        </Box>
+                      </Flex>
+                    </Box>
+                  ))}
+                </VStack>
+              </Box>
+            ))
+          ) : (
+            <Box my="20px" pl="5px">
+              <Text>No orders yet!</Text>
             </Box>
-          ))}
+          )}
         </Box>
       </Flex>
       <Modal

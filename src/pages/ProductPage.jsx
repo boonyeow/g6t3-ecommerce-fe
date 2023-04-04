@@ -13,6 +13,7 @@ import {
   Link,
   Text,
   VStack,
+  StackDivider,
 } from "@chakra-ui/react";
 import { Link as RLink, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -91,6 +92,25 @@ const ProductPage = () => {
       });
   };
 
+  // Review
+  const [review, setReview] = useState([]);
+
+  const fetchReviewDetails = () => {
+    axios
+      .get(`${import.meta.env.VITE_REVIEW_ENDPOINT}/review/get/product/${id}`)
+      .then((res) => {
+        console.log(res.data.data);
+        setReview(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    fetchReviewDetails();
+  }, []);
+
   return (
     <Flex w="100%">
       <Box w="6xl" m="auto" mt="24">
@@ -102,12 +122,14 @@ const ProductPage = () => {
             borderRadius="15px"
             border="1px"
             borderColor="#efefef"
-            alignItems="center">
+            alignItems="center"
+          >
             <Image
               src={product.image_url}
               objectFit="contain"
               h="300px"
-              w="100%"></Image>
+              w="100%"
+            ></Image>
           </Flex>
           <Box>
             <VStack alignItems="start">
@@ -115,7 +137,8 @@ const ProductPage = () => {
                 <Heading>{product.product_name}</Heading>
                 <Text
                   fontSize="xl"
-                  fontWeight="bold">{`$${product.price}`}</Text>
+                  fontWeight="bold"
+                >{`$${product.price}`}</Text>
               </Box>
               <Box>
                 Sold by{" "}
@@ -143,19 +166,42 @@ const ProductPage = () => {
               w="100%"
               mt="5"
               onClick={addToCart}
-              disabled={product.stock - quantity < 0 ? true : false}>
+              disabled={product.stock - quantity < 0 ? true : false}
+            >
               Add to cart
             </Button>
           </Box>
         </HStack>
-        <Box mt={2} p={4}>
+        <Box mt={2} p={4} boxShadow="xl" rounded="md" bg="white">
           <Text fontWeight="bold" fontSize="3xl">
             Reviews
           </Text>
-          <VStack alignItems="start">
-            <Box></Box>
-            <Text>Review 1</Text>
-            <Text>Review description</Text>
+          <VStack
+            divider={<StackDivider borderColor="gray.200" />}
+            spacing={4}
+            align="stretch"
+            mt={3}
+          >
+            {review.length != 0 ? (
+              review.map((item, idx) => (
+                <Box h="110px" key={idx} pl="5px">
+                  <Text fontSize="xs" fontWeight="bold">
+                    {item.user_id}
+                  </Text>
+                  <Text fontSize="xs">
+                    Rated - {item.review_stars} / 5 Stars
+                  </Text>
+                  <Text fontSize="xs">{item.review_date}</Text>
+                  <Text fontSize="sm" mt="10px">
+                    {item.review_description}
+                  </Text>
+                </Box>
+              ))
+            ) : (
+              <Text pl="3px" pb="10px">
+                No reviews yet
+              </Text>
+            )}
           </VStack>
         </Box>
       </Box>
