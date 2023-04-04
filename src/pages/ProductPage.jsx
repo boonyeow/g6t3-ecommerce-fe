@@ -60,7 +60,7 @@ const ProductPage = () => {
     };
 
     axios
-      .post(
+      .put(
         `${import.meta.env.VITE_CART_ENDPOINT}/add_item_to_cart/${email}`,
         data,
         {
@@ -126,12 +126,14 @@ const ProductPage = () => {
             borderRadius="15px"
             border="1px"
             borderColor="#efefef"
-            alignItems="center">
+            alignItems="center"
+          >
             <Image
               src={product.image_url}
               objectFit="contain"
               h="300px"
-              w="100%"></Image>
+              w="100%"
+            ></Image>
           </Flex>
           <Box>
             <VStack alignItems="start">
@@ -139,7 +141,8 @@ const ProductPage = () => {
                 <Heading>{product.product_name}</Heading>
                 <Text
                   fontSize="xl"
-                  fontWeight="bold">{`$${product.price}`}</Text>
+                  fontWeight="bold"
+                >{`$${product.price}`}</Text>
               </Box>
               <Box>
                 Sold by{" "}
@@ -180,7 +183,8 @@ const ProductPage = () => {
                 w="100%"
                 mt="5"
                 onClick={addToCart}
-                disabled={product.stock - quantity < 0 ? true : false}>
+                disabled={product.stock - quantity < 0 ? true : false}
+              >
                 Add to cart
               </Button>
             )}
@@ -194,7 +198,8 @@ const ProductPage = () => {
             divider={<StackDivider borderColor="gray.200" />}
             spacing={4}
             align="stretch"
-            mt={3}>
+            mt={3}
+          >
             {review.length != 0 ? (
               review.map((item, idx) => (
                 <Box h="110px" key={idx} pl="5px">

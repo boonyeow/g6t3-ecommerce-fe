@@ -31,7 +31,7 @@ import { useAuthStore } from "../store/authStore";
 import Swal from "sweetalert2";
 
 const OrderPage = () => {
-  const { email } = useAuthStore();
+  const { email, token } = useAuthStore();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
   const [rating, setRating] = useState("");
@@ -44,7 +44,7 @@ const OrderPage = () => {
 
   const fetchOrderList = () => {
     axios
-      .get(`${import.meta.env.VITE_ORDER_ENDPOINT}/order/get/user/${email}`, {
+      .get(`${import.meta.env.VITE_ORDER_ENDPOINT}/get/user/${email}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -152,7 +152,8 @@ const OrderPage = () => {
               variant="subtle"
               colorScheme="blue"
               verticalAlign={"middle"}
-              ml={"10px"}>
+              ml={"10px"}
+            >
               <TagLabel>{order.length}</TagLabel>
             </Tag>
           </Heading>
@@ -162,7 +163,8 @@ const OrderPage = () => {
                 <VStack
                   divider={<StackDivider borderColor="gray.200" />}
                   spacing={4}
-                  align="stretch">
+                  align="stretch"
+                >
                   <Box h="20px">
                     <Text fontWeight="bold">
                       Order Id - {order.order_id} &nbsp; &nbsp; (Date:&nbsp;
@@ -186,7 +188,8 @@ const OrderPage = () => {
                           <Box
                             as={Link}
                             to={`/product/${item.product_id}`}
-                            _hover={{ textDecoration: "none" }}>
+                            _hover={{ textDecoration: "none" }}
+                          >
                             <Text>{item.product_name}</Text>
                             <Text>Quantity Purchased: {item.quantity}</Text>
                             <Text>Price: ${item.price}</Text>
@@ -203,7 +206,8 @@ const OrderPage = () => {
                                 item.product_id,
                                 order.order_id
                               )
-                            }>
+                            }
+                          >
                             Review
                           </Button>
                         </Box>
@@ -224,7 +228,8 @@ const OrderPage = () => {
         initialFocusRef={initialRef}
         closeOnOverlayClick={false}
         isOpen={isOpen}
-        onClose={onClose}>
+        onClose={onClose}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>

@@ -28,7 +28,7 @@ const PaymentPage = () => {
     month: "",
   });
   const { cart } = useCartStore();
-  const { email } = useAuthStore();
+  const { email, token } = useAuthStore();
   useEffect(() => {
     console.log("changed", state);
   }, [state]);
@@ -70,17 +70,11 @@ const PaymentPage = () => {
     };
 
     axios
-      .post(
-        `${
-          import.meta.env.VITE_PLACE_AN_ORDER_ENDPOINT
-        }/place_an_order/${email}`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      .post(`${import.meta.env.VITE_PLACE_AN_ORDER_ENDPOINT}/${email}`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         console.log(res);
       });
@@ -94,7 +88,8 @@ const PaymentPage = () => {
         mt="24"
         p="25"
         direction="column"
-        alignSelf={"start"}>
+        alignSelf={"start"}
+      >
         <Box>
           <Heading>Review</Heading>
           {cart &&
@@ -106,12 +101,14 @@ const PaymentPage = () => {
                     border="1px"
                     borderColor="#d7d7d7"
                     borderRadius="12px"
-                    mr="5">
+                    mr="5"
+                  >
                     <Image
                       src={item.image_url}
                       height="50px"
                       width="50px"
-                      objectFit="contain"></Image>
+                      objectFit="contain"
+                    ></Image>
                   </Box>
                   <HStack spacing="16" w="100%">
                     <Box>
