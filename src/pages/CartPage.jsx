@@ -50,9 +50,9 @@ const CartPage = () => {
       })
       .then((res) => {
         setCartInfo(res.data.data);
-        if (initCheckedItems) {
-          setCheckedItems(new Array(res.data.data["items"].length).fill(false));
-        }
+        // if (initCheckedItems) {
+        //   setCheckedItems(new Array(res.data.data["items"].length).fill(false));
+        // }
       });
   };
 
@@ -109,21 +109,54 @@ const CartPage = () => {
     navigate("/payment");
   };
 
+  const handleUpdateQuantity = (newValue, idx) => {
+    let temp = { ...cartInfo };
+    let currentQuantity = Number(temp["items"][idx].quantity);
+    let newQuantity = Number(newValue);
+
+    if (currentQuantity === newQuantity) {
+      return;
+    }
+    let quantityToAdd = newQuantity - currentQuantity;
+
+    let item = temp["items"][idx];
+    let data = {
+      product_id: item["product_id"],
+      product_name: item["product_name"],
+      price: item["price"],
+      seller_email: item["seller_email"],
+      image_url: item["image_url"],
+      quantity: quantityToAdd,
+    };
+
+    axios
+      .post(`${import.meta.env.VITE_ADD_TO_CART_ENDPOINT}/${email}`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        temp["items"][idx]["quantity"] = newQuantity;
+        temp["total_price"] = fetchTotalPrice(temp["items"]);
+        fetchCartItems();
+      })
+      .catch((e) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: JSON.stringify(e),
+          confirmButtonColor: "#262626",
+        });
+      });
+  };
+
   return (
     <Box w="100%">
       <Flex minW="6xl" m="auto" mt="24" p="25" justifyContent="center">
         <Box>
           <Heading>Shopping Cart</Heading>
           <Box width="100%" mt="15px">
-            <Checkbox
-              isChecked={allChecked}
-              isIndeterminate={isIndeterminate}
-              onChange={(e) =>
-                setCheckedItems([e.target.checked, e.target.checked])
-              }>
-              Select All Items
-            </Checkbox>
-
             <VStack alignSelf={"start"} spacing="5" mt="25px">
               {cartInfo?.items.map((item, idx) => {
                 return (
@@ -133,16 +166,6 @@ const CartPage = () => {
                     overflow="hidden"
                     px="12"
                     spacing="16">
-                    <Box>
-                      <Checkbox
-                        isChecked={checkedItems[idx]}
-                        onChange={(e) => {
-                          let temp = [...checkedItems];
-                          temp[idx] = e.target.checked;
-                          setCheckedItems(temp);
-                        }}></Checkbox>
-                    </Box>
-
                     <Box
                       p="5"
                       border="1px"
@@ -165,10 +188,7 @@ const CartPage = () => {
                       maxWidth={"200px"}
                       defaultValue={item.quantity}
                       onChange={(val) => {
-                        let temp = { ...cartInfo };
-                        temp["items"][idx].quantity = Number(val);
-                        temp["total_price"] = fetchTotalPrice(temp["items"]);
-                        setCartInfo(temp);
+                        handleUpdateQuantity(val, idx);
                       }}
                     />
                     <Box textAlign={"center"}>

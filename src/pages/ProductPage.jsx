@@ -46,25 +46,19 @@ const ProductPage = () => {
     let data = {
       product_id: product["product_id"],
       product_name: product["product_name"],
-      // stock: product["stock"],
       price: product["price"],
-      price_api: product["price_api"],
       seller_email: product["seller_email"],
       image_url: product["image_url"],
       quantity: Number(quantity),
     };
 
     axios
-      .put(
-        `${import.meta.env.VITE_CART_ENDPOINT}/add_item_to_cart/${email}`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      .post(`${import.meta.env.VITE_ADD_TO_CART_ENDPOINT}/${email}`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         fetchProductDetails();
         Swal.fire({
@@ -125,14 +119,12 @@ const ProductPage = () => {
             borderRadius="15px"
             border="1px"
             borderColor="#efefef"
-            alignItems="center"
-          >
+            alignItems="center">
             <Image
               src={product.image_url}
               objectFit="contain"
               h="300px"
-              w="100%"
-            ></Image>
+              w="100%"></Image>
           </Flex>
           <Box>
             <VStack alignItems="start">
@@ -140,8 +132,7 @@ const ProductPage = () => {
                 <Heading>{product.product_name}</Heading>
                 <Text
                   fontSize="xl"
-                  fontWeight="bold"
-                >{`$${product.price}`}</Text>
+                  fontWeight="bold">{`$${product.price}`}</Text>
               </Box>
               <Box>
                 Sold by{" "}
@@ -182,8 +173,7 @@ const ProductPage = () => {
                 w="100%"
                 mt="5"
                 onClick={addToCart}
-                disabled={product.stock - quantity < 0 ? true : false}
-              >
+                disabled={product.stock - quantity < 0 ? true : false}>
                 Add to cart
               </Button>
             )}
@@ -197,8 +187,7 @@ const ProductPage = () => {
             divider={<StackDivider borderColor="gray.200" />}
             spacing={4}
             align="stretch"
-            mt={3}
-          >
+            mt={3}>
             {review.length != 0 ? (
               review.map((item, idx) => (
                 <Box h="110px" key={idx} pl="5px">

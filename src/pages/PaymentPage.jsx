@@ -16,6 +16,8 @@ import "react-credit-cards-2/dist/es/styles-compiled.css";
 import { useCartStore } from "../store/cartStore";
 import { useAuthStore } from "../store/authStore";
 import axios from "axios";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 const PaymentPage = () => {
   const [state, setState] = useState({
@@ -29,6 +31,7 @@ const PaymentPage = () => {
   });
   const { cart } = useCartStore();
   const { email, token } = useAuthStore();
+  const navigate = useNavigate();
   useEffect(() => {
     console.log("changed", state);
   }, [state]);
@@ -76,7 +79,22 @@ const PaymentPage = () => {
         },
       })
       .then((res) => {
-        console.log(res);
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: `Order placed!`,
+          confirmButtonText: "View Order",
+          showCancelButton: true,
+          cancelButtonText: "Back",
+          confirmButtonColor: "#262626",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate("/orders");
+          }
+        });
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -88,8 +106,7 @@ const PaymentPage = () => {
         mt="24"
         p="25"
         direction="column"
-        alignSelf={"start"}
-      >
+        alignSelf={"start"}>
         <Box>
           <Heading>Review</Heading>
           {cart &&
@@ -101,14 +118,12 @@ const PaymentPage = () => {
                     border="1px"
                     borderColor="#d7d7d7"
                     borderRadius="12px"
-                    mr="5"
-                  >
+                    mr="5">
                     <Image
                       src={item.image_url}
                       height="50px"
                       width="50px"
-                      objectFit="contain"
-                    ></Image>
+                      objectFit="contain"></Image>
                   </Box>
                   <HStack spacing="16" w="100%">
                     <Box>
