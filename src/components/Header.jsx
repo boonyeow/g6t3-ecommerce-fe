@@ -4,12 +4,8 @@ import { Box, Container, Flex, HStack, Link } from "@chakra-ui/react";
 
 const menuItems = [
   {
-    path: "/",
-    name: "Home",
-  },
-  {
     path: "/products",
-    name: "Product",
+    name: "Browse Products",
   },
   {
     path: "/cart",
@@ -22,14 +18,6 @@ const menuItems = [
   {
     path: "/login",
     name: "Login",
-  },
-  {
-    path: "/seller/create",
-    name: "Create Product",
-  },
-  {
-    path: "/seller/view",
-    name: "View All Products",
   },
 ];
 
@@ -47,7 +35,10 @@ const Header = ({ scrolled }) => {
       px={24}
       justifyContent={"center"}
       alignItems="center"
-      borderBottom="2px">
+      // borderBottom="2px"
+      bgColor="white"
+      boxShadow="xl"
+    >
       <Box className="hidden md:flex">
         <HStack spacing="10">
           {menuItems.map((item) => (
@@ -55,7 +46,8 @@ const Header = ({ scrolled }) => {
               as={RLink}
               key={item.name}
               to={item.path}
-              variant={location.pathname === item.path ? "active" : "inactive"}>
+              variant={location.pathname === item.path ? "active" : "inactive"}
+            >
               {item.name}
             </Link>
           ))}

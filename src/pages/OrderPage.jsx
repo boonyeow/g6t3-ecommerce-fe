@@ -159,7 +159,14 @@ const OrderPage = () => {
           </Heading>
           {order.length != 0 ? (
             order.map((order, idx) => (
-              <Box mt="30px" boxShadow="xl" p="6" rounded="md" bg="white">
+              <Box
+                mt="30px"
+                boxShadow="xl"
+                p="6"
+                rounded="md"
+                bg="white"
+                key={idx}
+              >
                 <VStack
                   divider={<StackDivider borderColor="gray.200" />}
                   spacing={4}
@@ -172,10 +179,15 @@ const OrderPage = () => {
                     </Text>
                   </Box>
                   {order.items.map((item, idx) => (
-                    <Box h="100px" mx="10px">
+                    <Box h="100px" mx="10px" key={idx}>
                       <Flex alignItems="center">
                         <HStack spacing="24px">
-                          <Box as={Link} to={`/product/${item.product_id}`}>
+                          <Box
+                            h="100px"
+                            w="100px"
+                            as={Link}
+                            to={`/product/${item.product_id}`}
+                          >
                             <Image
                               src={item.image_url}
                               objectFit="contain"
