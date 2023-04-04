@@ -84,15 +84,11 @@ const OrderPage = () => {
       review_stars: rating,
     };
     axios
-      .post(
-        `${import.meta.env.VITE_MAKEREVIEW_ENDPOINT}/make_a_review`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      .post(`${import.meta.env.VITE_MAKEREVIEW_ENDPOINT}`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         console.log(res.data);
         handleClose();

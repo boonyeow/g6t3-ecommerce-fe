@@ -1,15 +1,10 @@
 import {
   Box,
   Button,
-  Card,
-  CardBody,
-  CardFooter,
-  Container,
   Flex,
   HStack,
   Heading,
   Image,
-  SimpleGrid,
   Link,
   Text,
   VStack,
@@ -101,7 +96,11 @@ const ProductPage = () => {
 
   const fetchReviewDetails = () => {
     axios
-      .get(`${import.meta.env.VITE_REVIEW_ENDPOINT}/review/get/product/${id}`)
+      .get(`${import.meta.env.VITE_REVIEW_ENDPOINT}/get/product/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         console.log(res.data.data);
         setReview(res.data.data);
