@@ -1,6 +1,9 @@
-import React from "react";
-import { Link as RLink, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link as RLink, useLocation, useNavigate } from "react-router-dom";
 import { Box, Container, Flex, HStack, Link } from "@chakra-ui/react";
+import { useAuthStore } from "../store/authStore";
+import jwt_decode from "jwt-decode";
+import Swal from "sweetalert2";
 
 const menuItems = [
   {
@@ -15,14 +18,37 @@ const menuItems = [
     path: "/orders",
     name: "Orders",
   },
-  {
-    path: "/login",
-    name: "Login",
-  },
 ];
 
 const Header = ({ scrolled }) => {
+  const { clearStore, token } = useAuthStore();
   const location = useLocation();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (token !== null) {
+      let decoded = jwt_decode(token);
+      let token_exp = Date.parse(decoded.exp);
+      if (token_exp > Date.now()) {
+        setIsLoggedIn(true);
+      }
+    }
+  }, []);
+
+  const handleLogout = () => {
+    console.log(token);
+    clearStore();
+    setIsLoggedIn(false);
+    Swal.fire({
+      icon: "success",
+      title: "Success!",
+      text: `You have been logged out.`,
+      confirmButtonColor: "#262626",
+    }).then((res) => {
+      window.location.replace("/login");
+    });
+  };
+
   return (
     <Flex
       as="header"
@@ -37,8 +63,7 @@ const Header = ({ scrolled }) => {
       alignItems="center"
       // borderBottom="2px"
       bgColor="white"
-      boxShadow="xl"
-    >
+      boxShadow="xl">
       <Box className="hidden md:flex">
         <HStack spacing="10">
           {menuItems.map((item) => (
@@ -46,11 +71,18 @@ const Header = ({ scrolled }) => {
               as={RLink}
               key={item.name}
               to={item.path}
-              variant={location.pathname === item.path ? "active" : "inactive"}
-            >
+              variant={location.pathname === item.path ? "active" : "inactive"}>
               {item.name}
             </Link>
           ))}
+
+          {isLoggedIn ? (
+            <Link onClick={handleLogout}>Logout</Link>
+          ) : (
+            <Link as={RLink} to="/login">
+              Login
+            </Link>
+          )}
         </HStack>
       </Box>
     </Flex>

@@ -13,8 +13,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { PasswordField } from "../components/Login/PasswordField";
-import { Link as RLink, useNavigate } from "react-router-dom";
-import { useReducer } from "react";
+import { redirect, Link as RLink, useNavigate } from "react-router-dom";
+import { useEffect, useReducer } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useAuthStore } from "../store/authStore";
@@ -40,6 +40,12 @@ const LoginPage = () => {
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    if (token === null) {
+      navigate("/login");
+    }
+  }, []);
 
   const handleLogin = () => {
     // perform check on empty email/password
@@ -68,7 +74,7 @@ const LoginPage = () => {
           text: `You are currently logged in.`,
           confirmButtonColor: "#262626",
         }).then((result) => {
-          navigate("/");
+          window.location.replace("/");
         });
       })
       .catch((err) => {
