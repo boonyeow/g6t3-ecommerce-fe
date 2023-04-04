@@ -74,7 +74,12 @@ const PaymentPage = () => {
         `${
           import.meta.env.VITE_PLACE_AN_ORDER_ENDPOINT
         }/place_an_order/${email}`,
-        data
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       .then((res) => {
         console.log(res);

@@ -44,7 +44,11 @@ const OrderPage = () => {
 
   const fetchOrderList = () => {
     axios
-      .get(`${import.meta.env.VITE_ORDER_ENDPOINT}/order/get/user/${email}`)
+      .get(`${import.meta.env.VITE_ORDER_ENDPOINT}/order/get/user/${email}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         setOrder(res.data.data);
       })
@@ -82,7 +86,12 @@ const OrderPage = () => {
     axios
       .post(
         `${import.meta.env.VITE_MAKEREVIEW_ENDPOINT}/make_a_review`,
-        payload
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       .then((res) => {
         console.log(res.data);

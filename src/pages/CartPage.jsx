@@ -43,7 +43,11 @@ const CartPage = () => {
 
   const fetchCartItems = (initCheckedItems) => {
     axios
-      .get(`${import.meta.env.VITE_CART_ENDPOINT}/cart/${email}`)
+      .get(`${import.meta.env.VITE_CART_ENDPOINT}/${email}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         setCartInfo(res.data.data);
         if (initCheckedItems) {

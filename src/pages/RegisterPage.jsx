@@ -68,7 +68,7 @@ const RegisterPage = () => {
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: err.response.data.message,
+          text: JSON.stringify(err),
           confirmButtonColor: "#262626",
         });
         return;

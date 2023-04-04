@@ -72,12 +72,12 @@ const LoginPage = () => {
         });
       })
       .catch((err) => {
-        // Swal.fire({
-        //   icon: "error",
-        //   title: "Oops...",
-        //   text: err.response.data.message,
-        //   confirmButtonColor: "#262626",
-        // });
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Unable to login. Please ensure your login credentials are correct.",
+          confirmButtonColor: "#262626",
+        });
         return;
       });
   };

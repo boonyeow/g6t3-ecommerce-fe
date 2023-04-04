@@ -31,7 +31,11 @@ const ProductPage = () => {
   const navigate = useNavigate();
   const fetchProductDetails = () => {
     axios
-      .get(`${import.meta.env.VITE_PRODUCT_ENDPOINT}/product/get/${id}`)
+      .get(`${import.meta.env.VITE_PRODUCT_ENDPOINT}/get/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         setProduct(res.data.data);
       });
@@ -57,16 +61,16 @@ const ProductPage = () => {
 
     axios
       .post(
-        `${import.meta.env.VITE_CART_ENDPOINT}/cart/add_item_to_cart/${email}`,
+        `${import.meta.env.VITE_CART_ENDPOINT}/add_item_to_cart/${email}`,
         data,
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       )
       .then((res) => {
-        console.log("ress", res);
         fetchProductDetails();
         Swal.fire({
           icon: "success",
@@ -122,14 +126,12 @@ const ProductPage = () => {
             borderRadius="15px"
             border="1px"
             borderColor="#efefef"
-            alignItems="center"
-          >
+            alignItems="center">
             <Image
               src={product.image_url}
               objectFit="contain"
               h="300px"
-              w="100%"
-            ></Image>
+              w="100%"></Image>
           </Flex>
           <Box>
             <VStack alignItems="start">
@@ -137,8 +139,7 @@ const ProductPage = () => {
                 <Heading>{product.product_name}</Heading>
                 <Text
                   fontSize="xl"
-                  fontWeight="bold"
-                >{`$${product.price}`}</Text>
+                  fontWeight="bold">{`$${product.price}`}</Text>
               </Box>
               <Box>
                 Sold by{" "}
@@ -147,29 +148,42 @@ const ProductPage = () => {
                 </Link>
               </Box>
               <Box>
-                <Text fontWeight="semibold" color="#04111d">
-                  Quantity
-                </Text>
-                <NumberField
-                  onChange={(val) => {
-                    setQuantity(val);
-                  }}
-                  maxWidth="100%"
-                  max={product.stock}
-                />
-                <Text>{product.stock - quantity} stock available</Text>
+                {product.stock - quantity < 0 ? (
+                  <Text color="red" fontWeight="bold">
+                    Product is out of stock
+                  </Text>
+                ) : (
+                  <>
+                    <Text fontWeight="semibold" color="#04111d">
+                      Quantity
+                    </Text>
+                    <NumberField
+                      onChange={(val) => {
+                        setQuantity(val);
+                      }}
+                      maxWidth="100%"
+                      max={product.stock}
+                    />
+                    <Text>{product.stock - quantity} stock available</Text>
+                  </>
+                )}
               </Box>
             </VStack>
-            <Button
-              colorScheme="teal"
-              size="lg"
-              w="100%"
-              mt="5"
-              onClick={addToCart}
-              disabled={product.stock - quantity < 0 ? true : false}
-            >
-              Add to cart
-            </Button>
+            {product.stock - quantity < 0 ? (
+              <Button size="lg" w="100%" mt="5" colorScheme="teal">
+                Notify me when it's back in stock!
+              </Button>
+            ) : (
+              <Button
+                colorScheme="teal"
+                size="lg"
+                w="100%"
+                mt="5"
+                onClick={addToCart}
+                disabled={product.stock - quantity < 0 ? true : false}>
+                Add to cart
+              </Button>
+            )}
           </Box>
         </HStack>
         <Box mt={2} p={4} boxShadow="xl" rounded="md" bg="white">
@@ -180,8 +194,7 @@ const ProductPage = () => {
             divider={<StackDivider borderColor="gray.200" />}
             spacing={4}
             align="stretch"
-            mt={3}
-          >
+            mt={3}>
             {review.length != 0 ? (
               review.map((item, idx) => (
                 <Box h="110px" key={idx} pl="5px">

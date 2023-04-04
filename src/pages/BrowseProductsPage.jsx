@@ -15,16 +15,35 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
+import { useAuthStore } from "../store/authStore";
 
 const BrowseProductsPage = () => {
   const [products, setProducts] = useState([]);
+  const { token } = useAuthStore();
+  const navigate = useNavigate();
   const fetchProductList = () => {
+    // http://localhost:8000/api/v1/product/get
     axios
-      .get(`${import.meta.env.VITE_PRODUCT_ENDPOINT}/product/get`)
+      .get(`${import.meta.env.VITE_PRODUCT_ENDPOINT}/get`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         setProducts(res.data.data);
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Your session has ended. Please login to continue.",
+          confirmButtonColor: "#262626",
+        }).then((res) => {
+          navigate("/login");
+        });
       });
   };
 
