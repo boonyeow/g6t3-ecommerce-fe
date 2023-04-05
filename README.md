@@ -2,7 +2,19 @@
 
 ## Project Overview
 
-This simple E-commerce website allows users to register, login, browse, add products to cart, make payment and write reviews for products. The application is built using React.js and utilizes various third-party libraries such as Chakra UI and Sweet Alert for styling. The main purpose of this application is to showcase and its integration with multiple microservices such as product, order and review microservices to perform various business operations.
+This simple E-commerce website allows users to register, login, browse, add products to cart, make payment and write reviews for products. The application is built using **React.JS** and utilizes various third-party libraries such as **Chakra UI and Sweet Alert** for styling. The main purpose of this application is to showcase and its integration with multiple microservices such as product, order and review microservices to perform various business operations.
+
+The Backend for this project can be found here together with its instructions on how to set up `https://github.com/boonyeow/g6t3-ecommerce`
+
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [Running the Application](#running-the-application)
+- [Features](#features)
+- [Libraries and Tools](#libraries-and-tools)
+- [Development Tools](#development-tools)
+- [Contributors](#contributors)
+- [License](#license)
 
 ## Prerequisites
 
@@ -26,7 +38,7 @@ The following are the key features of the E-commerce website:
 4. Write reviews for products
 5. View order history
 
-### Libraries and Tools
+## Libraries and Tools
 
 **React** - A JavaScript library for building user interfaces
 **React Router** - A collection of navigational components for React
@@ -47,6 +59,7 @@ The following are the key features of the E-commerce website:
 ## Development Tools
 
 **Vite** - A build tool that focuses on speed and development experience
+
 **@vitejs/plugin-react** - Vite plugin to handle .jsx and .tsx files
 
 ## Contributors
