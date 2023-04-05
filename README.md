@@ -49,6 +49,15 @@ The following are the key features of the E-commerce website:
 **Vite** - A build tool that focuses on speed and development experience
 **@vitejs/plugin-react** - Vite plugin to handle .jsx and .tsx files
 
+## Contributors
+
+- Alvin Ling (alvin.ling.2021@scis.smu.edu.sg)
+- Tan Boon Yeow (bytan.2021@scis.smu.edu.sg)
+- Sebastian Ong (cpong.2021@scis.smu.edu.sg)
+- Kant Kaw Khin (kkkant.2021@scis.smu.edu.sg)
+- Ong Ping Yuan (pyong.2021@scis.smu.edu.sg)
+- Wong Dehou (dehou.wong.2021@scis.smu.edu.sg)
+
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
