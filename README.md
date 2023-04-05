@@ -10,11 +10,11 @@ Before running the application, ensure that you have Node.js and NPM installed o
 
 ## Running the Application
 
-1. Clone the repository using the command git clone https://github.com/boonyeow/g6t3-ecommerce-fe.git
-2. Navigate into the project directory using cd g6t3-ecommerce-fe
-3. Run npm install to install all the dependencies required for the application
-4. Run npm start to start the application in development mode
-5. Open your browser and go to http://localhost:5173 to view the application
+1. Clone the repository using the command git clone `https://github.com/boonyeow/g6t3-ecommerce-fe.git`
+2. Navigate into the project directory using `cd g6t3-ecommerce-fe`
+3. Run `npm install` to install all the dependencies required for the application
+4. Run `npm run dev` to start the application in development mode
+5. Open your browser and go to `http://localhost:5173` to view the application
 
 ## Features
 
