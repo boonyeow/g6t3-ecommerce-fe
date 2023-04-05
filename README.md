@@ -40,21 +40,21 @@ The following are the key features of the E-commerce website:
 
 ## Libraries and Tools
 
-**React** - A JavaScript library for building user interfaces
-**React Router** - A collection of navigational components for React
-**Chakra UI** - A simple and modular component library for React
-**Framer Motion** - A production-ready motion library for React
-**Emotion** - A CSS-in-JS library for React
-**Fontsource** - Self-hosted font library
-**axios** - A promise-based HTTP client for the browser and Node.js
-**jwt-decode** - A small browser library that helps decoding JWTs token which are Base64Url encoded
-**localforage** - A fast and simple storage library for JavaScript
-**match-sorter** - A library to sort and filter arrays
-**react-credit-cards-2** - A React component for credit card inputs
-**react-icons** - A collection of icons for React
-**sort-by** - A utility function for sorting arrays
-**sweetalert2** - A beautiful, responsive, customizable, accessible (WAI-ARIA) replacement for JavaScript's popup boxes
-**zustand** - A small, fast and scaleable state management solution for React applications
+- **React** - A JavaScript library for building user interfaces
+- **React Router** - A collection of navigational components for React
+- **Chakra UI** - A simple and modular component library for React
+- **Framer Motion** - A production-ready motion library for React
+- **Emotion** - A CSS-in-JS library for React
+- **Fontsource** - Self-hosted font library
+- **axios** - A promise-based HTTP client for the browser and Node.js
+- **jwt-decode** - A small browser library that helps decoding JWTs token which are Base64Url encoded
+- **localforage** - A fast and simple storage library for JavaScript
+- **match-sorter** - A library to sort and filter arrays
+- **react-credit-cards-2** - A React component for credit card inputs
+- **react-icons** - A collection of icons for React
+- **sort-by** - A utility function for sorting arrays
+- **sweetalert2** - A beautiful, responsive, customizable, accessible (WAI-ARIA) replacement for JavaScript's popup boxes
+- **zustand** - A small, fast and scaleable state management solution for React applications
 
 ## Development Tools
 
