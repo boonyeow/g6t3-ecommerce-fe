@@ -74,7 +74,7 @@ const LoginPage = () => {
           text: `You are currently logged in.`,
           confirmButtonColor: "#262626",
         }).then((result) => {
-          window.location.replace("/");
+          window.location.replace("/products");
         });
       })
       .catch((err) => {
@@ -100,16 +100,14 @@ const LoginPage = () => {
           base: "0",
           sm: "8",
           md: "16",
-        }}
-      >
+        }}>
         <Stack spacing="8">
           <Stack spacing="6">
             <Stack
               spacing={{
                 base: "2",
                 md: "3",
-              }}
-            >
+              }}>
               <Heading textAlign={"left"} size={"2xl"}>
                 LOGIN
               </Heading>
@@ -119,8 +117,7 @@ const LoginPage = () => {
                   as={RLink}
                   to="/register"
                   variant="link"
-                  colorScheme="blue"
-                >
+                  colorScheme="blue">
                   Sign up
                 </Button>
               </HStack>
