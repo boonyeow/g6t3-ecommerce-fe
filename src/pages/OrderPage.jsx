@@ -24,7 +24,7 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useAuthStore } from "../store/authStore";
@@ -39,8 +39,8 @@ const OrderPage = () => {
   const [modalProductName, setModalProductName] = useState("");
   const [modalProductId, setModalProductId] = useState("");
   const [modalOrderId, setModalOrderId] = useState("");
-
   const [order, setOrder] = useState([]);
+  const navigate = useNavigate();
 
   const fetchOrderList = () => {
     axios
@@ -55,6 +55,14 @@ const OrderPage = () => {
       })
       .catch((err) => {
         console.log(err.message);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Your session has ended. Please login to continue.",
+          confirmButtonColor: "#262626",
+        }).then((res) => {
+          navigate("/login");
+        });
       });
   };
 

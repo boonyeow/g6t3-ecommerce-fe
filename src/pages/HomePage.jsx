@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    navigate("/products");
+    navigate("/login");
   }, []);
 
   return "HELLO HOME";

@@ -169,12 +169,14 @@ const CartPage = () => {
                     borderRadius="24px"
                     overflow="hidden"
                     px="12"
-                    spacing="16">
+                    spacing="16"
+                  >
                     <Box
                       p="5"
                       border="1px"
                       borderColor="#d7d7d7"
-                      borderRadius="12px">
+                      borderRadius="12px"
+                    >
                       <Image src={item.image_url} h="50px" w="50px"></Image>
                     </Box>
                     <Box>
@@ -205,7 +207,8 @@ const CartPage = () => {
                       colorScheme="red"
                       onClick={() => {
                         removeItem(idx, item.product_id);
-                      }}>
+                      }}
+                    >
                       Remove
                     </Button>
                   </HStack>
