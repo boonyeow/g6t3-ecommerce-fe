@@ -5,12 +5,13 @@ import { useAuthStore } from "../store/authStore";
 import jwt_decode from "jwt-decode";
 
 const Layout = ({ children, className }) => {
-  const { clearStore, token } = useAuthStore();
+  const { idToken } = useAuthStore();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   useEffect(() => {
-    if (token !== null) {
-      let decoded = jwt_decode(token);
-      let token_exp = Date.parse(decoded.exp);
+    if (idToken !== null) {
+      let decoded = jwt_decode(idToken);
+      let token_exp = new Date(decoded.exp * 1000);
       if (token_exp > Date.now()) {
         setIsLoggedIn(true);
       }

@@ -21,14 +21,14 @@ const menuItems = [
 ];
 
 const Header = ({ scrolled }) => {
-  const { clearStore, token } = useAuthStore();
+  const { clearStore, idToken } = useAuthStore();
   const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    if (token !== null) {
-      let decoded = jwt_decode(token);
-      let token_exp = Date.parse(decoded.exp);
+    if (idToken !== null) {
+      let decoded = jwt_decode(idToken);
+      let token_exp = new Date(decoded.exp * 1000);
       if (token_exp > Date.now()) {
         setIsLoggedIn(true);
       }

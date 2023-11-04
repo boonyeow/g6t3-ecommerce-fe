@@ -4,17 +4,26 @@ import { persist } from "zustand/middleware";
 export const useAuthStore = create(
   persist(
     (set) => ({
-      token: null,
+      idToken: null,
+      accessToken: null,
+      refreshToken: null,
+      cognitoUsername: null,
       email: null,
       setToken: (data) => {
         set((state) => ({
-          token: data["bearer_token"],
+          idToken: data["id_token"],
+          accessToken: data["access_token"],
+          refreshToken: data["refresh_token"],
+          cognitoUsername: data["cognito_username"],
           email: data["email"],
         }));
       },
       clearStore: () => {
         set(() => ({
-          token: null,
+          idToken: null,
+          accessToken: null,
+          refreshToken: null,
+          cognitoUsername: null,
           email: null,
         }));
       },

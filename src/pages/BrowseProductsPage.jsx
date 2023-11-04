@@ -22,8 +22,9 @@ import { useAuthStore } from "../store/authStore";
 
 const BrowseProductsPage = () => {
   const [products, setProducts] = useState([]);
-  const { token } = useAuthStore();
+  const { accessToken: token } = useAuthStore();
   const navigate = useNavigate();
+
   const fetchProductList = () => {
     // http://localhost:8000/api/v1/product/get
     axios
@@ -60,7 +61,8 @@ const BrowseProductsPage = () => {
             variant="subtle"
             colorScheme="blue"
             verticalAlign={"middle"}
-            ml={"10px"}>
+            ml={"10px"}
+          >
             <TagLabel>{products.length}</TagLabel>
           </Tag>
         </Heading>
@@ -73,7 +75,8 @@ const BrowseProductsPage = () => {
                   key={idx}
                   borderRadius={16}
                   as={Link}
-                  to={`/product/${x.product_id}`}>
+                  to={`/product/${x.product_id}`}
+                >
                   <CardBody>
                     <Image
                       src={x.image_url}
